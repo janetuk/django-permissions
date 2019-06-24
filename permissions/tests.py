@@ -619,18 +619,18 @@ class PermissionTestCase(TestCase):
         """
         """
         # Permission
-        self.assertEqual(self.permission.__unicode__(), u"View (view)")
+        self.assertEqual(self.permission.__unicode__(), "View (view)")
 
         # ObjectPermission
         permissions.utils.grant_permission(self.page_1, self.role_1, self.permission)
         opr = ObjectPermission.objects.get(permission=self.permission, role=self.role_1)
-        self.assertEqual(opr.__unicode__(), u"View / %s / flat page - %s" % (self.role_1, self.page_1.id))
+        self.assertEqual(opr.__unicode__(), "View / %s / flat page - %s" % (self.role_1, self.page_1.id))
 
         # ObjectPermissionInheritanceBlock
         permissions.utils.add_inheritance_block(self.page_1, self.permission)
         opb = ObjectPermissionInheritanceBlock.objects.get(permission=self.permission)
 
-        self.assertEqual(opb.__unicode__(), u"View (view) / flat page - %s" % (self.page_1.id))
+        self.assertEqual(opb.__unicode__(), "View (view) / flat page - %s" % (self.page_1.id))
 
     def test_reset(self):
         """
@@ -664,7 +664,7 @@ class RegistrationTestCase(TestCase):
         """
         # Register a group
         result = permissions.utils.register_group("Brights")
-        self.failUnless(isinstance(result, Group))
+        self.assertTrue(isinstance(result, Group))
 
         # It's there
         group = Group.objects.get(name="Brights")
@@ -693,7 +693,7 @@ class RegistrationTestCase(TestCase):
         """
         # Register a role
         result = permissions.utils.register_role("Editor")
-        self.failUnless(isinstance(result, Role))
+        self.assertTrue(isinstance(result, Role))
 
         # It's there
         role = Role.objects.get(name="Editor")
@@ -722,7 +722,7 @@ class RegistrationTestCase(TestCase):
         """
         # Register a permission
         result = permissions.utils.register_permission("Change", "change")
-        self.failUnless(isinstance(result, Permission))
+        self.assertTrue(isinstance(result, Permission))
 
         # Is it there?
         p = Permission.objects.get(codename="change")

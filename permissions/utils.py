@@ -68,7 +68,7 @@ def add_local_role(obj, principal, role):
 
     ctype = ContentType.objects.get_for_model(obj)
 
-    if isinstance(role, basestring):
+    if isinstance(role, str):
         role = Role.objects.get(codename=role)
 
     if isinstance(principal, user_class):
@@ -135,7 +135,7 @@ def remove_local_role(obj, principal, role):
     from permissions.models import PrincipalRoleRelation
     from permissions.models import Role
 
-    if isinstance(role, basestring):
+    if isinstance(role, str):
         role = Role.objects.get(codename=role)
 
     try:
@@ -235,7 +235,7 @@ def remove_local_roles_by_role(obj, roles):
 
     _local_roles = []
     for role in roles:
-        if isinstance(role, basestring):
+        if isinstance(role, str):
             role = Role.objects.get(codename=role)
         _local_roles.append(role)
 
@@ -459,7 +459,7 @@ def has_permission(obj, user, codename, roles=None):
     if roles is None:
         roles = []
 
-    if not user.is_anonymous():
+    if not user.is_anonymous:
         roles.extend(get_roles(user, obj))
 
     result = False

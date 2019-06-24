@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
 
 from django.db import models, migrations
 from django.conf import settings
@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('content_id', models.PositiveIntegerField(verbose_name='Content id')),
-                ('content_type', models.ForeignKey(verbose_name='Content type', to='contenttypes.ContentType')),
+                ('content_type', models.ForeignKey(verbose_name='Content type', to='contenttypes.ContentType', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('content_id', models.PositiveIntegerField(verbose_name='Content id')),
-                ('content_type', models.ForeignKey(verbose_name='Content type', to='contenttypes.ContentType')),
+                ('content_type', models.ForeignKey(verbose_name='Content type', to='contenttypes.ContentType', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -53,8 +53,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('content_id', models.PositiveIntegerField(null=True, verbose_name='Content id', blank=True)),
-                ('content_type', models.ForeignKey(verbose_name='Content type', blank=True, to='contenttypes.ContentType', null=True)),
-                ('group', models.ForeignKey(verbose_name='Group', blank=True, to='auth.Group', null=True)),
+                ('content_type', models.ForeignKey(verbose_name='Content type', blank=True, to='contenttypes.ContentType', null=True, on_delete=models.CASCADE)),
+                ('group', models.ForeignKey(verbose_name='Group', blank=True, to='auth.Group', null=True, on_delete=models.SET_NULL)),
             ],
             options={
             },
@@ -76,31 +76,31 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='principalrolerelation',
             name='role',
-            field=models.ForeignKey(verbose_name='Role', to='permissions.Role'),
+            field=models.ForeignKey(verbose_name='Role', to='permissions.Role', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='principalrolerelation',
             name='user',
-            field=models.ForeignKey(verbose_name='User', blank=True, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(verbose_name='User', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='objectpermissioninheritanceblock',
             name='permission',
-            field=models.ForeignKey(verbose_name='Permission', to='permissions.Permission'),
+            field=models.ForeignKey(verbose_name='Permission', to='permissions.Permission', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='objectpermission',
             name='permission',
-            field=models.ForeignKey(verbose_name='Permission', to='permissions.Permission'),
+            field=models.ForeignKey(verbose_name='Permission', to='permissions.Permission', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='objectpermission',
             name='role',
-            field=models.ForeignKey(verbose_name='Role', blank=True, to='permissions.Role', null=True),
+            field=models.ForeignKey(verbose_name='Role', blank=True, to='permissions.Role', null=True, on_delete=models.SET_NULL),
             preserve_default=True,
         ),
     ]
