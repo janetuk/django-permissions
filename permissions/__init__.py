@@ -1,6 +1,8 @@
+# permissions imports
+import permissions.utils
+from permissions.exceptions import Unauthorized
+
 class PermissionBase(object):
-    import permissions.utils
-    from permissions.exceptions import Unauthorized
     """Mix-in class for permissions.
     """
     def grant_permission(self, role, permission):

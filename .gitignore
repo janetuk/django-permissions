@@ -1,3 +1,4 @@
+syntax: glob
 .installed.cfg
 *.pyc
 *.pyo
@@ -10,4 +11,3 @@
 *downloads/
 *docs/_build
 *dist
-.idea/
