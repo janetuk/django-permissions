@@ -51,11 +51,11 @@ class ObjectPermission(models.Model):
     content
         The object for which the permission is granted.
     """
-    role = models.ForeignKey("Role", verbose_name=_(u"Role"), blank=True, null=True)
-    permission = models.ForeignKey(Permission, verbose_name=_(u"Permission"))
-    content_type = models.ForeignKey(ContentType, verbose_name=_(u"Content type"))
-    content_id = models.PositiveIntegerField(verbose_name=_(u"Content id"))
-    content = GenericForeignKey(ct_field="content_type", fk_field="content_id")
+    role         = models.ForeignKey("Role",      verbose_name=_(u"Role"), blank=True, null=True, on_delete=models.SET_NULL)
+    permission   = models.ForeignKey(Permission,  verbose_name=_(u"Permission"),                  on_delete=models.SET_NULL)
+    content_type = models.ForeignKey(ContentType, verbose_name=_(u"Content type"),                on_delete=models.SET_NULL)
+    content_id   = models.PositiveIntegerField(verbose_name=_(u"Content id"))
+    content      = GenericForeignKey(ct_field="content_type", fk_field="content_id")
 
     class Meta:
         app_label = "permissions"
@@ -75,10 +75,10 @@ class ObjectPermissionInheritanceBlock(models.Model):
     content
         The object for which the inheritance is blocked.
     """
-    permission = models.ForeignKey(Permission, verbose_name=_(u"Permission"))
-    content_type = models.ForeignKey(ContentType, verbose_name=_(u"Content type"))
-    content_id = models.PositiveIntegerField(verbose_name=_(u"Content id"))
-    content = GenericForeignKey(ct_field="content_type", fk_field="content_id")
+    permission   = models.ForeignKey(Permission,  verbose_name=_(u"Permission"),   on_delete=models.SET_NULL)
+    content_type = models.ForeignKey(ContentType, verbose_name=_(u"Content type"), on_delete=models.SET_NULL)
+    content_id   = models.PositiveIntegerField(verbose_name=_(u"Content id"))
+    content      = GenericForeignKey(ct_field="content_type", fk_field="content_id")
 
     class Meta:
         app_label = "permissions"
@@ -159,10 +159,10 @@ class PrincipalRoleRelation(models.Model):
     content
         The content object which gets the local role (optional).
     """
-    user = models.ForeignKey(User, verbose_name=_(u"User"), blank=True, null=True)
-    group = models.ForeignKey(Group, verbose_name=_(u"Group"), blank=True, null=True)
-    role = models.ForeignKey(Role, verbose_name=_(u"Role"))
-    content_type = models.ForeignKey(ContentType, verbose_name=_(u"Content type"), blank=True, null=True)
+    user         = models.ForeignKey(User,        verbose_name=_(u"User"),         blank=True, null=True, on_delete=models.SET_NULL)
+    group        = models.ForeignKey(Group,       verbose_name=_(u"Group"),        blank=True, null=True, on_delete=models.SET_NULL)
+    role         = models.ForeignKey(Role,        verbose_name=_(u"Role"),                                on_delete=models.SET_NULL)
+    content_type = models.ForeignKey(ContentType, verbose_name=_(u"Content type"), blank=True, null=True, on_delete=models.SET_NULL)
     content_id = models.PositiveIntegerField(verbose_name=_(u"Content id"), blank=True, null=True)
     content = GenericForeignKey(ct_field="content_type", fk_field="content_id")
 
