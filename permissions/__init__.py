@@ -1,6 +1,4 @@
 # permissions imports
-import permissions.utils
-from permissions.exceptions import Unauthorized
 
 class PermissionBase(object):
     """Mix-in class for permissions.
@@ -18,6 +16,8 @@ class PermissionBase(object):
             The permission which should be granted. Either a permission
             object or the codename of a permission.
         """
+        import permissions.utils
+
         return permissions.utils.grant_permission(self, role, permission)
 
     def remove_permission(self, role, permission):
@@ -33,6 +33,8 @@ class PermissionBase(object):
             The permission which should be removed. Either a permission object
             or the codename of a permission.
         """
+        import permissions.utils
+
         return permissions.utils.remove_permission(self, role, permission)
 
     def has_permission(self, user, permission, roles=None):
@@ -52,6 +54,8 @@ class PermissionBase(object):
             If passed, these roles will be assigned to the user temporarily
             before the permissions are checked.
         """
+        import permissions.utils
+
         if roles is None:
             roles = []
         return permissions.utils.has_permission(self, user, permission, roles)
@@ -73,10 +77,13 @@ class PermissionBase(object):
             If passed, these roles will be assigned to the user temporarily
             before the permissions are checked.
         """
+        import permissions.utils
+
         if roles is None:
             roles = []
 
         if not self.has_permission(user, permission, roles):
+            from permissions.exceptions import Unauthorized
             raise Unauthorized("User '%s' doesn't have permission '%s' for object '/%s' (%s)." % (user, permission, self.slug, self.__class__.name))
 
     def add_inheritance_block(self, permission):
@@ -88,6 +95,8 @@ class PermissionBase(object):
             The permission for which an inheritance block should be added.
             Either a permission object or the codename of a permission.
         """
+        import permissions.utils
+
         return permissions.utils.add_inheritance_block(self, permission)
 
     def remove_inheritance_block(self, permission):
@@ -99,6 +108,8 @@ class PermissionBase(object):
             The permission for which an inheritance block should be removed.
             Either a permission object or the codename of a permission.
         """
+        import permissions.utils
+
         return permissions.utils.remove_inheritance_block(self, permission)
 
     def is_inherited(self, codename):
@@ -110,6 +121,8 @@ class PermissionBase(object):
             The permission which should be checked. Must be the codename of
             the permission.
         """
+        import permissions.utils
+
         return permissions.utils.is_inherited(self, codename)
 
     def add_role(self, principal, role):
@@ -123,11 +136,15 @@ class PermissionBase(object):
         role
             The role which is assigned.
         """
+        import permissions.utils
+
         return permissions.utils.add_local_role(self, principal, role)
 
     def get_roles(self, principal):
         """Returns *direct* local roles for passed principal (user or group).
         """
+        import permissions.utils
+
         return permissions.utils.get_local_roles(self, principal)
 
     def remove_role(self, principal, role):
@@ -141,6 +158,8 @@ class PermissionBase(object):
         role
             The role which is removed.
         """
+        import permissions.utils
+
         return permissions.utils.remove_local_role(self, principal, role)
 
     def remove_roles(self, principal):
@@ -152,4 +171,6 @@ class PermissionBase(object):
             The principal (user or group) from which all local roles are
             removed.
         """
+        import permissions.utils
+
         return permissions.utils.remove_local_roles(self, principal)
