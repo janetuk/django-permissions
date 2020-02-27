@@ -1,10 +1,6 @@
 
 from django.db import models
 
-from django.contrib.auth import get_user_model
-User = get_user_model()
-
-from django.contrib.auth.models import Group
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy as _
@@ -161,35 +157,59 @@ class PrincipalRoleRelation(models.Model):
     content
         The content object which gets the local role (optional).
     """
-    user         = models.ForeignKey(User,        verbose_name=_(u"User"),         blank=True, null=True, on_delete=models.SET_NULL)
-    group        = models.ForeignKey(Group,       verbose_name=_(u"Group"),        blank=True, null=True, on_delete=models.SET_NULL)
-    role         = models.ForeignKey(Role,        verbose_name=_(u"Role"),                                on_delete=models.CASCADE)
-    content_type = models.ForeignKey(ContentType, verbose_name=_(u"Content type"), blank=True, null=True, on_delete=models.SET_NULL)
-    content_id = models.PositiveIntegerField(verbose_name=_(u"Content id"), blank=True, null=True)
-    content = GenericForeignKey(ct_field="content_type", fk_field="content_id")
+
+    bos2_models_loaded = True
+
+    try:
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+    except:
+        bos2_models_loaded = False
+
+    if bos2_models_loaded:
+
+        from django.contrib.auth.models import Group
+
+        user         = models.ForeignKey(User,        verbose_name=_(u"User"),         blank=True, null=True, on_delete=models.SET_NULL)
+        group        = models.ForeignKey(Group,       verbose_name=_(u"Group"),        blank=True, null=True, on_delete=models.SET_NULL)
+        role         = models.ForeignKey(Role,        verbose_name=_(u"Role"),                                on_delete=models.CASCADE)
+        content_type = models.ForeignKey(ContentType, verbose_name=_(u"Content type"), blank=True, null=True, on_delete=models.SET_NULL)
+        content_id = models.PositiveIntegerField(verbose_name=_(u"Content id"), blank=True, null=True)
+        content = GenericForeignKey(ct_field="content_type", fk_field="content_id")
 
     class Meta:
         app_label = "permissions"
 
     def __unicode__(self):
-        if self.user:
-            principal = self.user.username
-        else:
-            principal = self.group
+        principal = 'bos2_not_yet_loaded'
+        my_role   = 'bos2_not_yet_loaded'
 
-        return "%s - %s" % (principal, self.role)
+        if bos2_models_loaded:
+            my_role = self.role
+
+            if self.user:
+                principal = self.user.username
+            else:
+                principal = self.group
+
+        return "%s - %s" % (principal, my_role)
 
     def get_principal(self):
         """Returns the principal.
         """
-        return self.user or self.group
+        if bos2_models_loaded:
+            return self.user or self.group
+        else:
+            return 'bos2_not_yet_loaded'
 
     def set_principal(self, principal):
         """Sets the principal.
         """
-        if isinstance(principal, User):
-            self.user = principal
-        else:
-            self.group = principal
+        if bos2_models_loaded:
+            if isinstance(principal, User):
+                self.user = principal
+            else:
+                self.group = principal
 
-    principal = property(get_principal, set_principal)
+    if bos2_models_loaded:
+        principal = property(get_principal, set_principal)
