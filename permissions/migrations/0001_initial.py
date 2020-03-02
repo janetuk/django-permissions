@@ -15,26 +15,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='ObjectPermission',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('role', models.ForeignKey("Role", verbose_name=_("Role"), blank=True, null=True, on_delete=models.SET_NULL)),
-                ('permission', models.ForeignKey(Permission, verbose_name=_("Permission"), on_delete=models.CASCADE)),
-                ('content_id', models.PositiveIntegerField(verbose_name='Content id')),
-                ('content_type', models.ForeignKey(verbose_name='Content type', to='contenttypes.ContentType', on_delete=models.CASCADE)),
-                ('content',  GenericForeignKey(ct_field="content_type", fk_field="content_id")),
-            ],
-        ),
-        migrations.CreateModel(
-            name='ObjectPermissionInheritanceBlock',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('permission', models.ForeignKey(Permission, verbose_name=_("Permission"), on_delete=models.CASCADE)),
-                ('content_id', models.PositiveIntegerField(verbose_name='Content id')),
-                ('content_type', models.ForeignKey(verbose_name='Content type', to='contenttypes.ContentType', on_delete=models.CASCADE)),
-                ('content',  GenericForeignKey(ct_field="content_type", fk_field="content_id")),
-        ),
-        migrations.CreateModel(
             name='Permission',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -44,12 +24,32 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+            name='ObjectPermission',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('role', models.PositiveIntegerField(verbose_name='Role')),
+                ('permission', models.ForeignKey(Permission, verbose_name='Permission', on_delete=models.CASCADE)),
+                ('content_id', models.PositiveIntegerField(verbose_name='Content id')),
+                ('content_type', models.ForeignKey(verbose_name='Content type', to='contenttypes.ContentType', on_delete=models.CASCADE)),
+                # ('content',  GenericForeignKey(ct_field="content_type", fk_field="content_id")),
+            ],
+        ),
+        migrations.CreateModel(
+            name='ObjectPermissionInheritanceBlock',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('permission', models.ForeignKey(Permission, verbose_name='Permission', on_delete=models.CASCADE)),
+                ('content_id', models.PositiveIntegerField(verbose_name='Content id')),
+                ('content_type', models.ForeignKey(verbose_name='Content type', to='contenttypes.ContentType', on_delete=models.CASCADE)),
+                # ('content',  GenericForeignKey(ct_field="content_type", fk_field="content_id")),
+            ],
+        ),
+        migrations.CreateModel(
             name='PrincipalRoleRelation',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('user', models.ForeignKey("User", verbose_name=_("User"), blank=True, null=True, on_delete=models.SET_NULL)),
-                ('group', models.ForeignKey("Group", verbose_name=_("Group"), blank=True, null=True, on_delete=models.SET_NULL)),
-                ('role', models.ForeignKey("Role", verbose_name=_("Role"), blank=True, null=True, on_delete=models.CASCADE)),
+                ('user', models.ForeignKey("User", verbose_name='User', blank=True, null=True, on_delete=models.SET_NULL)),
+                ('role', models.ForeignKey("Role", verbose_name='Role', blank=True, null=True, on_delete=models.CASCADE)),
                 ('content_id', models.PositiveIntegerField(null=True, verbose_name='Content id', blank=True)),
                 ('content_type', models.ForeignKey(verbose_name='Content type', blank=True, to='contenttypes.ContentType', null=True, on_delete=models.SET_NULL)),
                 ('group', models.ForeignKey(verbose_name='Group', blank=True, to='auth.Group', null=True, on_delete=models.SET_NULL)),
