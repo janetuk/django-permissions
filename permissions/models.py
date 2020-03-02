@@ -1,4 +1,6 @@
 
+from django.conf import settings
+
 from django.db import models
 
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -179,12 +181,14 @@ class PrincipalRoleRelation(models.Model):
         content = GenericForeignKey(ct_field="content_type", fk_field="content_id")
     """
 
+    bos2_models_loaded = False
+
     user = None
 
     try:
-        from django.contrib.auth import get_user_model
-        User = get_user_model()
-        user = models.ForeignKey(User, verbose_name=_("User"), blank=True, null=True, on_delete=models.SET_NULL)
+        # from django.contrib.auth import get_user_model
+        # User = get_user_model()
+        user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("User"), blank=True, null=True, on_delete=models.SET_NULL)
     except:
         pass
 
@@ -192,6 +196,7 @@ class PrincipalRoleRelation(models.Model):
 
     try:
         group = models.ForeignKey(Group, verbose_name=_("Group"), blank=True, null=True, on_delete=models.SET_NULL)
+        bos2_models_loaded = True
     except:
         pass
 
