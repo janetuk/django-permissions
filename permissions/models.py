@@ -158,6 +158,7 @@ class PrincipalRoleRelation(models.Model):
         The content object which gets the local role (optional).
     """
 
+    """
     bos2_models_loaded = True
 
     try:
@@ -176,6 +177,51 @@ class PrincipalRoleRelation(models.Model):
         content_type = models.ForeignKey(ContentType, verbose_name=_(u"Content type"), blank=True, null=True, on_delete=models.SET_NULL)
         content_id = models.PositiveIntegerField(verbose_name=_(u"Content id"), blank=True, null=True)
         content = GenericForeignKey(ct_field="content_type", fk_field="content_id")
+    """
+
+    user = None
+
+    try:
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        user = models.ForeignKey(User, verbose_name=_("User"), blank=True, null=True, on_delete=models.SET_NULL)
+    except:
+        pass
+
+    group = None
+
+    try:
+        group = models.ForeignKey(Group, verbose_name=_("Group"), blank=True, null=True, on_delete=models.SET_NULL)
+    except:
+        pass
+
+    role = None
+
+    try:
+        role = models.ForeignKey(Role, verbose_name=_("Role"), on_delete=models.CASCADE)
+    except:
+        pass
+
+    content_type = None
+
+    try:
+        content_type = models.ForeignKey(ContentType, verbose_name=_("Content type"), blank=True, null=True, on_delete=models.SET_NULL)
+    except:
+        pass
+
+    content_id = None
+
+    try:
+        content_id = models.PositiveIntegerField(verbose_name=_("Content id"), blank=True, null=True)
+    except:
+        pass
+
+    content = None
+
+    try:
+        content = GenericForeignKey(ct_field="content_type", fk_field="content_id")
+    except:
+        pass
 
     class Meta:
         app_label = "permissions"
