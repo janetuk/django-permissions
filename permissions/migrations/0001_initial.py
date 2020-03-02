@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('role', models.PositiveIntegerField(verbose_name='Role')),
-                ('permission', models.ForeignKey(Permission, verbose_name='Permission', on_delete=models.CASCADE)),
+                ('permission', models.PositiveIntegerField(verbose_name='Permission')),
                 ('content_id', models.PositiveIntegerField(verbose_name='Content id')),
                 ('content_type', models.ForeignKey(verbose_name='Content type', to='contenttypes.ContentType', on_delete=models.CASCADE)),
                 # ('content',  GenericForeignKey(ct_field="content_type", fk_field="content_id")),
@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
             name='ObjectPermissionInheritanceBlock',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('permission', models.ForeignKey(Permission, verbose_name='Permission', on_delete=models.CASCADE)),
+                ('permission', models.PositiveIntegerField(verbose_name='Permission')),
                 ('content_id', models.PositiveIntegerField(verbose_name='Content id')),
                 ('content_type', models.ForeignKey(verbose_name='Content type', to='contenttypes.ContentType', on_delete=models.CASCADE)),
                 # ('content',  GenericForeignKey(ct_field="content_type", fk_field="content_id")),
@@ -48,11 +48,11 @@ class Migration(migrations.Migration):
             name='PrincipalRoleRelation',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('user', models.ForeignKey("User", verbose_name='User', blank=True, null=True, on_delete=models.SET_NULL)),
-                ('role', models.ForeignKey("Role", verbose_name='Role', blank=True, null=True, on_delete=models.CASCADE)),
+                ('user', models.PositiveIntegerField(verbose_name='User')),
+                ('role', models.PositiveIntegerField(verbose_name='Role')),
+                ('group', models.PositiveIntegerField(verbose_name='Group')),
                 ('content_id', models.PositiveIntegerField(null=True, verbose_name='Content id', blank=True)),
                 ('content_type', models.ForeignKey(verbose_name='Content type', blank=True, to='contenttypes.ContentType', null=True, on_delete=models.SET_NULL)),
-                ('group', models.ForeignKey(verbose_name='Group', blank=True, to='auth.Group', null=True, on_delete=models.SET_NULL)),
             ],
         ),
         migrations.CreateModel(
@@ -67,13 +67,18 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='principalrolerelation',
+            name='user',
+            field=models.ForeignKey(verbose_name='User', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL),
+        ),
+        migrations.AddField(
+            model_name='principalrolerelation',
             name='role',
             field=models.ForeignKey(verbose_name='Role', to='permissions.Role', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='principalrolerelation',
-            name='user',
-            field=models.ForeignKey(verbose_name='User', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL),
+            name='group',
+            field=models.ForeignKey(verbose_name='Group', blank=True, to='auth.Group', null=True, on_delete=models.SET_NULL),
         ),
         migrations.AddField(
             model_name='objectpermissioninheritanceblock',
