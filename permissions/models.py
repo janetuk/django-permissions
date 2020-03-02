@@ -195,6 +195,7 @@ class PrincipalRoleRelation(models.Model):
     group = None
 
     try:
+        from django.contrib.auth.models import Group
         group = models.ForeignKey(Group, verbose_name=_("Group"), blank=True, null=True, on_delete=models.SET_NULL)
         bos2_models_loaded = True
     except:
