@@ -24,9 +24,9 @@ class Permission(models.Model):
         The content types for which the permission is active. This can be
         used to display only reasonable permissions for an object.
     """
-    name = models.CharField(_(u"Name"), max_length=100, unique=True)
-    codename = models.CharField(_(u"Codename"), max_length=100, unique=True)
-    content_types = models.ManyToManyField(ContentType, verbose_name=_(u"Content Types"), blank=True, related_name="content_types")
+    name = models.CharField(("Name"), max_length=100, unique=True)
+    codename = models.CharField(("Codename"), max_length=100, unique=True)
+    content_types = models.ManyToManyField(ContentType, verbose_name=("Content Types"), blank=True, related_name="content_types")
 
     class Meta:
         app_label = "permissions"
@@ -49,10 +49,10 @@ class ObjectPermission(models.Model):
     content
         The object for which the permission is granted.
     """
-    role         = models.ForeignKey("Role",      verbose_name=_(u"Role"), blank=True, null=True, on_delete=models.SET_NULL)
-    permission   = models.ForeignKey(Permission,  verbose_name=_(u"Permission"),                  on_delete=models.CASCADE)
-    content_type = models.ForeignKey(ContentType, verbose_name=_(u"Content type"),                on_delete=models.CASCADE)
-    content_id   = models.PositiveIntegerField(verbose_name=_(u"Content id"))
+    role         = models.ForeignKey("Role",      verbose_name=("Role"), blank=True, null=True, on_delete=models.SET_NULL)
+    permission   = models.ForeignKey(Permission,  verbose_name=("Permission"),                  on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, verbose_name=("Content type"),                on_delete=models.CASCADE)
+    content_id   = models.IntegerField(verbose_name=("Content id"), null=False, default=0)
     content      = GenericForeignKey(ct_field="content_type", fk_field="content_id")
 
     class Meta:
@@ -73,9 +73,9 @@ class ObjectPermissionInheritanceBlock(models.Model):
     content
         The object for which the inheritance is blocked.
     """
-    permission   = models.ForeignKey(Permission,  verbose_name=_(u"Permission"),   on_delete=models.CASCADE)
-    content_type = models.ForeignKey(ContentType, verbose_name=_(u"Content type"), on_delete=models.CASCADE)
-    content_id   = models.PositiveIntegerField(verbose_name=_(u"Content id"))
+    permission   = models.ForeignKey(Permission,  verbose_name=("Permission"),   on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, verbose_name=("Content type"), on_delete=models.CASCADE)
+    content_id   = models.IntegerField(verbose_name=("Content id"), null=False, default=0)
     content      = GenericForeignKey(ct_field="content_type", fk_field="content_id")
 
     class Meta:
@@ -173,11 +173,11 @@ class PrincipalRoleRelation(models.Model):
 
         from django.contrib.auth.models import Group
 
-        user         = models.ForeignKey(User,        verbose_name=_(u"User"),         blank=True, null=True, on_delete=models.SET_NULL)
-        group        = models.ForeignKey(Group,       verbose_name=_(u"Group"),        blank=True, null=True, on_delete=models.SET_NULL)
-        role         = models.ForeignKey(Role,        verbose_name=_(u"Role"),                                on_delete=models.CASCADE)
-        content_type = models.ForeignKey(ContentType, verbose_name=_(u"Content type"), blank=True, null=True, on_delete=models.SET_NULL)
-        content_id = models.PositiveIntegerField(verbose_name=_(u"Content id"), blank=True, null=True)
+        user         = models.ForeignKey(User,        verbose_name=("User"),         blank=True, null=True, on_delete=models.SET_NULL)
+        group        = models.ForeignKey(Group,       verbose_name=("Group"),        blank=True, null=True, on_delete=models.SET_NULL)
+        role         = models.ForeignKey(Role,        verbose_name=("Role"),                                on_delete=models.CASCADE)
+        content_type = models.ForeignKey(ContentType, verbose_name=("Content type"), blank=True, null=True, on_delete=models.SET_NULL)
+        content_id = models.PositiveIntegerField(verbose_name=("Content id"), blank=True, null=True)
         content = GenericForeignKey(ct_field="content_type", fk_field="content_id")
     """
 
@@ -188,7 +188,7 @@ class PrincipalRoleRelation(models.Model):
     try:
         # from django.contrib.auth import get_user_model
         # User = get_user_model()
-        user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("User"), blank=True, null=True, on_delete=models.SET_NULL)
+        user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=("User"), blank=True, null=True, on_delete=models.SET_NULL)
     except:
         pass
 
@@ -196,7 +196,8 @@ class PrincipalRoleRelation(models.Model):
 
     try:
         from django.contrib.auth.models import Group
-        group = models.ForeignKey(Group, verbose_name=_("Group"), blank=True, null=True, on_delete=models.SET_NULL)
+
+        group = models.ForeignKey(Group, verbose_name=("Group"), blank=True, null=True, on_delete=models.SET_NULL)
         bos2_models_loaded = True
     except:
         pass
@@ -204,21 +205,21 @@ class PrincipalRoleRelation(models.Model):
     role = None
 
     try:
-        role = models.ForeignKey(Role, verbose_name=_("Role"), on_delete=models.CASCADE)
+        role = models.ForeignKey(Role, verbose_name=("Role"), on_delete=models.CASCADE, null=False, default=0)
     except:
         pass
 
     content_type = None
 
     try:
-        content_type = models.ForeignKey(ContentType, verbose_name=_("Content type"), blank=True, null=True, on_delete=models.SET_NULL)
+        content_type = models.ForeignKey(ContentType, verbose_name=("Content type"), blank=True, null=True, on_delete=models.SET_NULL)
     except:
         pass
 
     content_id = None
 
     try:
-        content_id = models.PositiveIntegerField(verbose_name=_("Content id"), blank=True, null=True)
+        content_id = models.PositiveIntegerField(verbose_name=("Content id"), null=False, default=0)
     except:
         pass
 
