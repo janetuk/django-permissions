@@ -52,7 +52,7 @@ class ObjectPermission(models.Model):
     role         = models.ForeignKey("Role",      verbose_name=("Role"), blank=True, null=True, on_delete=models.SET_NULL)
     permission   = models.ForeignKey(Permission,  verbose_name=("Permission"),                  on_delete=models.CASCADE)
     content_type = models.ForeignKey(ContentType, verbose_name=("Content type"),                on_delete=models.CASCADE)
-    content_id   = models.IntegerField(verbose_name=("Content id"), null=False, default=0)
+    content_id   = models.IntegerField(verbose_name=("Content id"), null=False)
     content      = GenericForeignKey(ct_field="content_type", fk_field="content_id")
 
     class Meta:
@@ -75,7 +75,7 @@ class ObjectPermissionInheritanceBlock(models.Model):
     """
     permission   = models.ForeignKey(Permission,  verbose_name=("Permission"),   on_delete=models.CASCADE)
     content_type = models.ForeignKey(ContentType, verbose_name=("Content type"), on_delete=models.CASCADE)
-    content_id   = models.IntegerField(verbose_name=("Content id"), null=False, default=0)
+    content_id   = models.IntegerField(verbose_name=("Content id"), null=False)
     content      = GenericForeignKey(ct_field="content_type", fk_field="content_id")
 
     class Meta:
@@ -205,7 +205,7 @@ class PrincipalRoleRelation(models.Model):
     role = None
 
     try:
-        role = models.ForeignKey(Role, verbose_name=("Role"), on_delete=models.CASCADE, null=False, default=0)
+        role = models.ForeignKey(Role, verbose_name=("Role"), on_delete=models.CASCADE, null=False)
     except:
         pass
 
@@ -219,7 +219,7 @@ class PrincipalRoleRelation(models.Model):
     content_id = None
 
     try:
-        content_id = models.PositiveIntegerField(verbose_name=("Content id"), null=False, default=0)
+        content_id = models.PositiveIntegerField(verbose_name=("Content id"), null=False)
     except:
         pass
 
