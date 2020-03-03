@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
             name='PrincipalRoleRelation',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('content_id', models.PositiveIntegerField(blank=True, null=True, verbose_name='Content id')),
+                ('content_id', models.PositiveIntegerField(verbose_name='Content id', null=True, blank=True)),
                 ('content_type', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='contenttypes.ContentType', verbose_name='Content type')),
                 ('group', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='auth.Group', verbose_name='Group')),
                 ('role', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='permissions.Role', verbose_name='Role')),
@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
             name='ObjectPermissionInheritanceBlock',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('content_id', models.PositiveIntegerField(verbose_name='Content id')),
+                ('content_id', models.PositiveIntegerField(verbose_name='Content id', null=True, blank=True)),
                 ('content_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contenttypes.ContentType', verbose_name='Content type')),
                 ('permission', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='permissions.Permission', verbose_name='Permission')),
             ],
@@ -59,7 +59,7 @@ class Migration(migrations.Migration):
             name='ObjectPermission',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('content_id', models.PositiveIntegerField(verbose_name='Content id')),
+                ('content_id', models.PositiveIntegerField(verbose_name='Content id', null=True, blank=True)),
                 ('content_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contenttypes.ContentType', verbose_name='Content type')),
                 ('permission', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='permissions.Permission', verbose_name='Permission')),
                 ('role', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='permissions.Role', verbose_name='Role')),
