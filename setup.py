@@ -22,7 +22,7 @@ setup(
     keywords='django authorization permissions',
     author='Kai Diefenbach',
     author_email='kai.diefenbach@iqpp.de',
-    url='http://www.iqpp.com',
+    url='https://github.com/janetuk/django-permissions/',
     license='BSD',
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,

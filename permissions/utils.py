@@ -391,6 +391,12 @@ def has_permission(obj, user, codename, roles=None):
     if roles is None:
         roles = []
 
+    # This test may need replacing by if not user.is_anonymous:
+    # See https://docs.djangoproject.com/en/3.0/releases/2.0/ :
+    #        :::
+    #     Using User.is_authenticated() and User.is_anonymous() as methods rather than properties is no longer supported.
+    #        :::
+    #
     if not user.is_anonymous():
         roles.extend(get_roles(user, obj))
 
